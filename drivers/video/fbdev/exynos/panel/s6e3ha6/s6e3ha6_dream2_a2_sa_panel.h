@@ -188,7 +188,11 @@ static u8 dream2_a2_sa_mps_table[][1] = { { 0xCC }, { 0xDC } };
 static u8 dream2_a2_sa_elvss_table[][S6E3HA6_TOTAL_NR_LUMINANCE][1] = {
 	{
 		/* OVER_ZERO */
+#ifdef CONFIG_PANEL_SMART_DIMMING
+		{ 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0C }, { 0x0D }, { 0x0E },
+#else
 		{ 0x0A }, { 0x0A }, { 0x0A }, { 0x0A }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0C }, { 0x0D }, { 0x0E },
+#endif
 		{ 0x0F }, { 0x11 }, { 0x13 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 },
 		{ 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 },
 		{ 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 },
@@ -205,7 +209,11 @@ static u8 dream2_a2_sa_elvss_table[][S6E3HA6_TOTAL_NR_LUMINANCE][1] = {
 	},
 	{
 		/* UNDER_ZERO */
+#ifdef CONFIG_PANEL_SMART_DIMMING
+		{ 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0C }, { 0x0D }, { 0x0E },
+#else
 		{ 0x0A }, { 0x0A }, { 0x0A }, { 0x0A }, { 0x0B }, { 0x0B }, { 0x0B }, { 0x0C }, { 0x0D }, { 0x0E },
+#endif
 		{ 0x0F }, { 0x11 }, { 0x13 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 },
 		{ 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 },
 		{ 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 }, { 0x15 },
@@ -1766,7 +1774,11 @@ DEFINE_VARIABLE_PACKET(dream2_a2_sa_gram_img_pattern_1, DSI_PKT_TYPE_WR_MEM, DRE
 #endif
 
 DEFINE_VARIABLE_PACKET(dream2_a2_sa_gamma, DSI_PKT_TYPE_WR, DREAM2_A2_SA_GAMMA, &dream2_a2_sa_maptbl[GAMMA_MAPTBL], 1);
+#ifndef CONFIG_PANEL_SMART_DIMMING
 DEFINE_VARIABLE_PACKET(dream2_a2_sa_aor, DSI_PKT_TYPE_WR, DREAM2_A2_SA_AOR, &dream2_a2_sa_maptbl[AOR_MAPTBL], 1);
+#else
+DEFINE_STATIC_PACKET(dream2_a2_sa_aor, DSI_PKT_TYPE_WR, DREAM2_A2_SA_AOR);
+#endif
 
 static struct pkt_update_info PKTUI(dream2_a2_sa_tset_mps_elvss)[] = {
 	{ .offset = 1, .maptbl = &dream2_a2_sa_maptbl[TSET_MAPTBL] },
