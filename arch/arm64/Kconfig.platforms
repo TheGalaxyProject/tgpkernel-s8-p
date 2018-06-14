@@ -177,6 +177,14 @@ config SOC_EXYNOS8895_ANDROID_VERSION_P
 	help
 	 This enables support for Android version P of EXYNOS8895
 
+config MODEL_DREAMLTE
+	bool "Samsung Galaxy S8"
+	depends on SOC_EXYNOS8895
+
+config MODEL_DREAM2LTE
+	bool "Samsung Galaxy S8 Plus"
+	depends on SOC_EXYNOS8895
+
 config ARCH_EXYNOS8
 	bool "ARMv8 based Samsung Exynos8"
 	select HAVE_ARM_SCU if SMP
