@@ -21,7 +21,6 @@
 auditfilter hal_wifi_supplicant_default product_ship_prop:file { read }; comm="wpa_supplicant"
 # P180807-04786
 auditfilter radio sysfs_android_usb:dir search; comm="m.android.phone"
-
 # http://mobilerndhub.sec.samsung.net/hub/site/seandroid/board/P_review_request/view/23399073
 auditfilter hal_drm_default media_data_file:dir search;
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-326
@@ -139,7 +138,7 @@ auditfilter tzdaemon system_app:unix_stream_socket connectto;
 # DEV P181025-06269
 auditfilter idmap sdcardfs:file read;
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1095
-auditfilter idmap dalvikcache_data_file:file { read write };
+auditfilter idmap dalvikcache_data_file:file { read write execute};
 
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-724
 auditfilter radio app_data_file:file execute;
