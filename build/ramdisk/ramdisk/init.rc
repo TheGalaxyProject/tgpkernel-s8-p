@@ -488,22 +488,6 @@ on post-fs-data
     chmod 0771 /data
     # We restorecon /data in case the userdata partition has been reset.
     restorecon /data
-    # KNOX_NAP
-    chmod 0660 /dev/ncm_dev
-    chown system system /dev/ncm_dev
-	
-    chown system radio /efs
-    chmod 0771 /efs
-    restorecon /efs
-
-    chown system system /carrier
-    chmod 0771 /carrier
-    restorecon /carrier
-
-    chown system system /dqmdbg
-    chmod 0770 /dqmdbg
-    restorecon /dqmdbg
-
     # Samsung ODE
     chown system system /keydata
     chmod 0771 /keydata
@@ -900,10 +884,6 @@ on zygote-start && property:ro.crypto.state=encrypted && property:ro.crypto.type
     start zygote_secondary
 
 on boot
-    # KNOX KAP
-    chown system system /dev/knox_kap
-    chmod 0660 /dev/knox_kap
-
     # basic network init
     ifup lo
     hostname localhost
@@ -1951,54 +1931,6 @@ service defrag_service /system/bin/idledefrag
 on property:vold.should_defrag=1
     start defrag_service
 
-## SecProductFeature_KNOX.SEC_PRODUCT_FEATURE_KNOX_SUPPORT_MDM{
-## EDM AuditLog
-service edmaudit /system/bin/edmaudit
-    class main
-    user system
-    group system
-    capabilities SYSLOG
-    disabled
-
-on property:security.edmaudit=true
-    start edmaudit
-
-on property:security.edmaudit=false
-    stop edmaudit
-## } SecProductFeature_KNOX.SEC_PRODUCT_FEATURE_KNOX_SUPPORT_MDM
-
-# knox_changer service
-# UCM ODE mode
-service ucs_enable /sbin/knox_changer -u
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_disable /sbin/knox_changer -v
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_reset /sbin/knox_changer -w
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-on property:security.knox_ucs_mode=true
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_enable
-
-on property:security.knox_ucs_mode=false
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_disable
-
-on property:security.knox_ucs_mode=reset
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_reset
-    
 service SIDESYNC_service /system/bin/ss_conn_daemon
     class main
     socket ss_conn_daemon stream 0666 system system
