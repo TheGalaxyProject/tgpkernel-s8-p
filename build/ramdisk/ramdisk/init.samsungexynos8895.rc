@@ -145,6 +145,13 @@ on post-fs-data
     chown wifi root /efs/wifi/.mac.cob
     chmod 0664 /efs/wifi/.mac.cob
 
+#Private Mode
+    mkdir /mnt/shell/privatemode 0700 system system
+    mkdir /storage/Private 0000 system system
+    mkdir /data/privatemode 0770 system system
+    chown system system /data/privatemode
+    restorecon /data/privatemode
+
 on boot
 # SSWAP
     write /proc/sys/vm/swappiness 160
