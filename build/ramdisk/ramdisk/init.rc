@@ -549,17 +549,6 @@ on post-fs-data
     # Start Stork Daemon
     start storkd
 
-    # VaultKeeper socket
-    mkdir /dev/socket/vaultkeeper 0770 system system
-    chown system system /dev/socket/vaultkeeper
-    chmod 0770 /dev/socket/vaultkeeper
-
-    #start VaultKeeper
-    start vaultkeeper
-
-    #start VaultKeeper_HAL
-    start vaultkeeper_hal
-
     #start CASS
     start cass
 
@@ -1899,13 +1888,6 @@ service charon /system/bin/charon
     disabled
     oneshot
 
-
-# VaultKeeper
-service vaultkeeper /system/bin/vaultkeeperd
-    class core
-    user system
-    group system
-    disabled
 
 # CASS
 service cass /system/bin/cass
