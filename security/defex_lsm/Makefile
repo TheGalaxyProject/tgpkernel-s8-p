@@ -54,7 +54,7 @@ $(warning [DEFEX] VTS true $(SEC_BUILD_OPTION_VTS))
 EXTRA_CFLAGS += -DDEFEX_PERMISSIVE_SP
 EXTRA_CFLAGS += -DDEFEX_PERMISSIVE_PED
 else
-$(warning [DEFEX] VTS false $(SEC_BUILD_OPTION_VTS))
+#$(warning [DEFEX] VTS false $(SEC_BUILD_OPTION_VTS))
 endif
 
 ifeq ($(CONFIG_SEC_FACTORY), y)
@@ -93,4 +93,3 @@ ifneq ($(wildcard  $(srctree)/$(src)/pack_rules.c),)
 	$(call cmd,pack)
 
 endif
-
