@@ -26,12 +26,6 @@ on init
 
     symlink /data/app /factory
 
-    #Reactivation Lock
-    symlink /dev/block/platform/11120000.ufs/by-name/STEADY /dev/block/steady
-
-    #Google FRP solution
-    symlink /dev/block/platform/11120000.ufs/by-name/PERSISTENT /dev/block/persistent
-
 on post-fs
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
