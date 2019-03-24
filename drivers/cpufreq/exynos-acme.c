@@ -799,12 +799,12 @@ EXPORT_SYMBOL(exynos_cpufreq_reset_boot_qos);
 
 #ifdef CONFIG_SW_SELF_DISCHARGING
 static ssize_t show_cpufreq_self_discharging(struct kobject *kobj,
-			     struct attribute *attr, char *buf)
+			     struct kobj_attribute *attr, char *buf)
 {
 	return sprintf(buf, "%d\n", self_discharging);
 }
 
-static ssize_t store_cpufreq_self_discharging(struct kobject *kobj, struct attribute *attr,
+static ssize_t store_cpufreq_self_discharging(struct kobject *kobj, struct kobj_attribute *attr,
 			      const char *buf, size_t count)
 {
 	int input;
@@ -826,7 +826,7 @@ static ssize_t store_cpufreq_self_discharging(struct kobject *kobj, struct attri
 #endif
 
 #ifdef CONFIG_SW_SELF_DISCHARGING
-static struct global_attr cpufreq_self_discharging =
+static struct kobj_attribute cpufreq_self_discharging =
 		__ATTR(cpufreq_self_discharging, S_IRUGO | S_IWUSR,
 			show_cpufreq_self_discharging, store_cpufreq_self_discharging);
 #endif
