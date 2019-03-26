@@ -49,6 +49,6 @@ log.tag.stats_log=I
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Fri Feb 15 19:05:48 KST 2019
-ro.bootimage.build.date.utc=1550225148
-ro.bootimage.build.fingerprint=samsung/dream2ltexx/dream2lte:9/PPR1.180610.011/G955FXXU4DSBA:user/test-keys
+ro.bootimage.build.date=Tue Mar 5 22:55:04 KST 2019
+ro.bootimage.build.date.utc=1551794104
+ro.bootimage.build.fingerprint=samsung/dream2ltexx/dream2lte:9/PPR1.180610.011/G955FXXS4DSC2:user/test-keys
