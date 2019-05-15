@@ -1337,7 +1337,6 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
 				pr_err("%s failed(%d): PA%pa,mapcnt%d,cnt%d\n",
 					__func__, rc, &pa,
 					page_mapcount(page), page_count(page));
-				show_page_inode(page);
 			}
 
 			switch(rc) {
