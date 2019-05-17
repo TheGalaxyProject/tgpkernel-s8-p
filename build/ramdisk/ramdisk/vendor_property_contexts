@@ -131,6 +131,41 @@ persist.vendor.zit.      		u:object_r:vendor_zygoteinit_prop:s0
 
 #  http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1307
 persist.smartcard.payment_sim      		u:object_r:payment_sim_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1475
+ro.boot.activatedid      		u:object_r:boot_activatedid_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1496
+persist.cache_status_64         u:object_r:cache_status_prop:s0
+persist.cache_status_32         u:object_r:cache_status_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1510
+vendor.camera.motor.service                       u:object_r:vendor_camera_motor_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1565 
+ro.factory.factory_binary                       u:object_r:vendor_factory_prop:s0 
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1585
+vzw.sys.cdmaless                        u:object_r:vendor_vzw_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1597
+persist.sys.ina.status         u:object_r:ina_status_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1617
+ArmNN.float32Performance.execTime                       u:object_r:armnn_prop:s0
+ArmNN.float32Performance.powerUsage                     u:object_r:armnn_prop:s0
+ArmNN.quantized8Performance.execTime                    u:object_r:armnn_prop:s0
+ArmNN.quantized8Performance.powerUsage                  u:object_r:armnn_prop:s0
+ArmNN.relaxedFloat32toFloat16Performance.execTime       u:object_r:armnn_prop:s0
+debug.armnn.log                                         u:object_r:armnn_prop:s0       
+debug.armnn.var                                         u:object_r:armnn_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1640
+persist.sys.bt.driver.version                            u:object_r:vendor_bluetooth_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1646
+mdc.                u:object_r:csc_prop:s0
+
 #line 1 "vendor/samsung/system/sepolicy/BSP/slsi/common/property_contexts"
 ##########################
 # property service keys
