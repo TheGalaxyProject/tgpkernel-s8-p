@@ -524,7 +524,7 @@ void tcp_v4_err(struct sk_buff *icmp_skb, u32 info)
 #else
 		tcp_retransmit_timer(sk);
 #endif
-			
+
 		}
 
 		break;
@@ -636,7 +636,7 @@ EXPORT_SYMBOL(tcp_v4_send_check);
  */
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
 {
@@ -779,7 +779,7 @@ static void tcp_v4_send_ack(const struct sock *sk, struct sk_buff *skb,
 			    u32 win, u32 tsval, u32 tsecr, int oif,
 			    struct tcp_md5sig_key *key,
 			    int reply_flags, u8 tos)
-#endif				
+#endif
 {
 	const struct tcphdr *th = tcp_hdr(skb);
 	struct {
@@ -899,7 +899,7 @@ if (tcptw->mptcp_tw && tcptw->mptcp_tw->meta_tw) {
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
 				  struct request_sock *req)
@@ -917,10 +917,10 @@ void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
 #endif
 
 	tcp_v4_send_ack(sk, skb, seq,
-			tcp_rsk(req)->rcv_nxt, 
+			tcp_rsk(req)->rcv_nxt,
 #ifdef CONFIG_MPTCP
-			0, 
-#endif 
+			0,
+#endif
 			req->rsk_rcv_wnd,
 			tcp_time_stamp,
 			req->ts_recent,
@@ -941,7 +941,7 @@ void tcp_v4_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
  *	socket.
  */
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 int tcp_v4_send_synack(const struct sock *sk, struct dst_entry *dst,
 			      struct flowi *fl,
@@ -976,7 +976,7 @@ int tcp_v4_send_synack(const struct sock *sk, struct dst_entry *dst,
  *	IPv4 request_sock destructor.
  */
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v4_reqsk_destructor(struct request_sock *req)
 {
@@ -1349,7 +1349,7 @@ struct request_sock_ops tcp_request_sock_ops __read_mostly = {
 };
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 const struct tcp_request_sock_ops tcp_request_sock_ipv4_ops = {
 	.mss_clamp	=	TCP_MSS_DEFAULT,
@@ -1490,7 +1490,7 @@ put_and_exit:
 EXPORT_SYMBOL(tcp_v4_syn_recv_sock);
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 struct sock *tcp_v4_cookie_check(struct sock *sk, struct sk_buff *skb)
 {
@@ -1662,7 +1662,7 @@ bool tcp_prequeue(struct sock *sk, struct sk_buff *skb)
 	} else if (skb_queue_len(&tp->ucopy.prequeue) == 1) {
 		wake_up_interruptible_sync_poll(sk_sleep(sk),
 					   POLLIN | POLLRDNORM | POLLRDBAND);
-		if (!inet_csk_ack_scheduled(sk) 
+		if (!inet_csk_ack_scheduled(sk)
 #ifdef CONFIG_MPTCP
 			 && !mptcp(tp)
 #endif
@@ -1772,13 +1772,13 @@ process:
 	if (!sk)
 		goto no_tcp_socket;
 #endif
-	/* 
+	/*
 	 * FIXME: SEC patch for P171206-06874
 	 * If ACK packets for three-way handshake are received at the same time by multi core,
 	 * each core will try to access request socket and create new socket to establish TCP connection.
 	 * But, there is no synchronization scheme to avoid race condition for request socket,
 	 * 2nd attempt that create new socket will be fail, it caused 2nd ACK packet discard.
-	 * 
+	 *
 	 * For that reason,
 	 * If 2nd ACK packet contained meaningful data, it caused unintended packet drop.
 	 * so, 2nd core should wait at this point until new socket was created by 1st core.
@@ -1808,7 +1808,11 @@ process:
 			reqsk_put(req);
 			goto discard_it;
 		}
-		if (unlikely(sk->sk_state != TCP_LISTEN 
+		if (tcp_checksum_complete(skb)) {
+			reqsk_put(req);
+			goto csum_error;
+		}
+		if (unlikely(sk->sk_state != TCP_LISTEN
 #ifdef CONFIG_MPTCP
 		&& !is_meta_sk(sk)
 #endif
@@ -1817,7 +1821,7 @@ process:
 			goto lookup;
 		}
 		sock_hold(sk);
-		
+
 #ifdef CONFIG_MPTCP
 		if (is_meta_sk(sk)) {
 			bh_lock_sock(sk);
@@ -1968,6 +1972,7 @@ discard_it:
 	return 0;
 
 discard_and_relse:
+	sk_drops_add(sk, skb);
 	sock_put(sk);
 	goto discard_it;
 
@@ -2104,7 +2109,7 @@ void tcp_v4_destroy_sock(struct sock *sk)
 	tcp_write_queue_purge(sk);
 
 	/* Cleans up our, hopefully empty, out_of_order_queue. */
-	__skb_queue_purge(&tp->out_of_order_queue);
+	skb_rbtree_purge(&tp->out_of_order_queue);
 
 #ifdef CONFIG_TCP_MD5SIG
 	/* Clean up the MD5 key list, if any */

@@ -97,7 +97,7 @@ static struct tcp_md5sig_key *tcp_v6_md5_do_lookup(const struct sock *sk,
 #endif
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void inet6_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 {
@@ -113,7 +113,7 @@ void inet6_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 __u32 tcp_v6_init_sequence(const struct sk_buff *skb)
 {
@@ -124,7 +124,7 @@ __u32 tcp_v6_init_sequence(const struct sk_buff *skb)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 int tcp_v6_connect(struct sock *sk, struct sockaddr *uaddr,
 			  int addr_len)
@@ -333,7 +333,7 @@ failure:
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v6_mtu_reduced(struct sock *sk)
 {
@@ -516,7 +516,7 @@ out:
 
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 int tcp_v6_send_synack(const struct sock *sk, struct dst_entry *dst,
 			      struct flowi *fl,
@@ -558,7 +558,7 @@ done:
 
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v6_reqsk_destructor(struct request_sock *req)
 {
@@ -763,7 +763,7 @@ static int tcp_v6_init_req(struct request_sock *req, const struct sock *sk_liste
 static void tcp_v6_init_req(struct request_sock *req,
 			    const struct sock *sk_listener,
 			    struct sk_buff *skb)
-#endif			
+#endif
 {
 	struct inet_request_sock *ireq = inet_rsk(req);
 	const struct ipv6_pinfo *np = inet6_sk(sk_listener);
@@ -810,7 +810,7 @@ struct request_sock_ops tcp6_request_sock_ops __read_mostly = {
 };
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 const struct tcp_request_sock_ops tcp_request_sock_ipv6_ops = {
 	.mss_clamp	=	IPV6_MIN_MTU - sizeof(struct tcphdr) -
@@ -952,7 +952,7 @@ static void tcp_v6_send_response(const struct sock *sk, struct sk_buff *skb, u32
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb)
 {
@@ -1078,7 +1078,7 @@ static void tcp_v6_timewait_ack(struct sock *sk, struct sk_buff *skb)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
 				  struct request_sock *req)
@@ -1112,7 +1112,7 @@ void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
 
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 struct sock *tcp_v6_cookie_check(struct sock *sk, struct sk_buff *skb)
 {
@@ -1126,7 +1126,7 @@ struct sock *tcp_v6_cookie_check(struct sock *sk, struct sk_buff *skb)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 int tcp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
 {
@@ -1155,7 +1155,7 @@ static void tcp_v6_restore_cb(struct sk_buff *skb)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
 					 struct request_sock *req,
@@ -1391,7 +1391,7 @@ out:
  * held.
  */
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
 {
@@ -1608,7 +1608,7 @@ process:
 	if (sk->sk_state == TCP_TIME_WAIT)
 #endif
 		goto do_time_wait;
-		
+
 #ifdef CONFIG_MPTCP
 	if (!sk)
 		goto no_tcp_socket;
@@ -1640,6 +1640,10 @@ process:
 			reqsk_put(req);
 			goto discard_it;
 		}
+		if (tcp_checksum_complete(skb)) {
+			reqsk_put(req);
+			goto csum_error;
+		}
 		if (unlikely(sk->sk_state != TCP_LISTEN
 #ifdef CONFIG_MPTCP
 		&& !is_meta_sk(sk)
@@ -1649,12 +1653,12 @@ process:
 			goto lookup;
 		}
 		sock_hold(sk);
-		
+
 #ifdef CONFIG_MPTCP
 		if (is_meta_sk(sk)) {
 			bh_lock_sock(sk);
 
-			if (sock_owned_by_user(sk)) {				
+			if (sock_owned_by_user(sk)) {
 				skb->sk = sk;
 				if (unlikely(sk_add_backlog(sk, skb,
 							    sk->sk_rcvbuf + sk->sk_sndbuf))) {
@@ -1805,6 +1809,7 @@ discard_it:
 	return 0;
 
 discard_and_relse:
+	sk_drops_add(sk, skb);
 	sock_put(sk);
 	goto discard_it;
 
@@ -1902,7 +1907,7 @@ static void tcp_v6_early_demux(struct sk_buff *skb)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 struct timewait_sock_ops tcp6_timewait_sock_ops = {
 	.twsk_obj_size	= sizeof(struct tcp6_timewait_sock),
@@ -1911,7 +1916,7 @@ struct timewait_sock_ops tcp6_timewait_sock_ops = {
 };
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 const struct inet_connection_sock_af_ops ipv6_specific = {
 	.queue_xmit	   = inet6_csk_xmit,
@@ -1946,7 +1951,7 @@ static const struct tcp_sock_af_ops tcp_sock_ipv6_specific = {
  *	TCP over IPv4 via INET6 API
  */
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 const struct inet_connection_sock_af_ops ipv6_mapped = {
 	.queue_xmit	   = ip_queue_xmit,
@@ -2000,7 +2005,7 @@ static int tcp_v6_init_sock(struct sock *sk)
 }
 
 #ifndef CONFIG_MPTCP
-static 
+static
 #endif
 void tcp_v6_destroy_sock(struct sock *sk)
 {

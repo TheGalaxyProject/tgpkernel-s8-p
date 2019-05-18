@@ -1109,6 +1109,8 @@ static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun)
 		struct rq *rq = rq_of_rt_rq(rt_rq);
 
 		raw_spin_lock(&rq->lock);
+		update_rq_clock(rq);
+
 		if (rt_rq->rt_time) {
 			u64 runtime;
 
@@ -2039,7 +2041,7 @@ static struct task_struct *_pick_next_task_rt(struct rq *rq)
 		rt_se = pick_next_rt_entity(rq, rt_rq);
 		BUG_ON(!rt_se);
 		update_rt_load_avg(now, rt_se, rt_rq, cpu_of(rq_of_rt_rq(rt_rq)));
-		rt_rq->curr = rt_se;		
+		rt_rq->curr = rt_se;
 		rt_rq = group_rt_rq(rt_se);
 	} while (rt_rq);
 
@@ -2274,7 +2276,7 @@ static int find_victim_rt_rq(struct task_struct *task, struct cpumask *domain_cp
 			/* If Non-RT CPU is exist, select it first */
 			*best_cpu = i;
 			victim_rt = false;
-			trace_sched_fluid_victim_rt_cpu(task, victim, *best_cpu, "Victim Normal");			
+			trace_sched_fluid_victim_rt_cpu(task, victim, *best_cpu, "Victim Normal");
 			break;
 		}
 	}
@@ -3087,7 +3089,7 @@ static void switched_to_rt(struct rq *rq, struct task_struct *p)
 		if (p->nr_cpus_allowed > 1 && rq->rt.overloaded)
 			queue_push_tasks(rq);
 #else
-		if (p->prio < rq->curr->prio)
+		if (p->prio < rq->curr->prio && cpu_online(cpu_of(rq)))
 			resched_curr(rq);
 #endif /* CONFIG_SMP */
 	}

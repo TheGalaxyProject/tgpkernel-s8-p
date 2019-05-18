@@ -381,11 +381,11 @@ struct ufs_monitor {
  */
 struct ufs_reset_info {
 	u8 rst_type;
-	u32 rst_total; 
-	u32 rst_cnt_probe; 
-	u32 rst_cnt_uic_err; 
-	u32 rst_cnt_host_reset; 
-	u32 rst_cnt_hibern8; 
+	u32 rst_total;
+	u32 rst_cnt_probe;
+	u32 rst_cnt_uic_err;
+	u32 rst_cnt_host_reset;
+	u32 rst_cnt_hibern8;
 };
 
 struct ufs_secure_log {
@@ -721,7 +721,8 @@ struct ufs_hba {
 	struct ufs_secure_log secure_log;
 
 	int			latency_hist_enabled;
-	struct io_latency_state io_lat_s;
+	struct io_latency_state io_lat_read;
+	struct io_latency_state io_lat_write;
 #if defined(SEC_UFS_ERROR_COUNT)
 	struct SEC_UFS_counting SEC_err_info;
 #endif

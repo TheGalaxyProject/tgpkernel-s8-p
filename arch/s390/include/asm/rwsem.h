@@ -90,7 +90,7 @@ static inline int __down_read_trylock(struct rw_semaphore *sem)
 /*
  * lock for writing
  */
-static inline void __down_write(struct rw_semaphore *sem)
+static inline void __down_write_nested(struct rw_semaphore *sem, int subclass)
 {
 	signed long old, new, tmp;
 
@@ -106,6 +106,11 @@ static inline void __down_write(struct rw_semaphore *sem)
 		: "cc", "memory");
 	if (old != 0)
 		rwsem_down_write_failed(sem);
+}
+
+static inline void __down_write(struct rw_semaphore *sem)
+{
+	__down_write_nested(sem, 0);
 }
 
 /*
