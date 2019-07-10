@@ -27,6 +27,10 @@ vendor.sys.mobicoredaemon.enable  u:object_r:vendor_mobicoredaemon_prop:s0
 
 # need to check
 sat.test.monkey.pid       u:object_r:vendor_prop:s0
+
+# for eden
+ro.eden.devices                 u:object_r:vendor_eden_prop:s0
+ro.eden.npu.version.path        u:object_r:vendor_eden_prop:s0
 #line 1 "vendor/samsung/system/sepolicy/samsung/property_contexts"
 # http://mobilerndhub.sec.samsung.net/hub/site/seandroid/board/P_review_request/view/23265980
 vendor.bluetooth_fw_ver                     u:object_r:vendor_bluetooth_prop:s0
@@ -166,6 +170,20 @@ persist.sys.bt.driver.version                            u:object_r:vendor_bluet
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1646
 mdc.                u:object_r:csc_prop:s0
 
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1663
+vendor.sys.qseecomd.               u:object_r:vendor_qseecomd_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1707
+ro.netflix.channel               u:object_r:csc_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1701
+ro.boot.dram_info      		u:object_r:boot_dram_info_prop:s0
+ro.boot.force_upload      		u:object_r:boot_force_upload_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1933
+sys.rdxd.      		            u:object_r:rdxd_prop:s0
+
+
 #line 1 "vendor/samsung/system/sepolicy/BSP/slsi/common/property_contexts"
 ##########################
 # property service keys
@@ -181,6 +199,9 @@ vendor.cbd.                                 u:object_r:vendor_cbd_prop:s0
 
 # http://mobilerndhub.sec.samsung.net/hub/site/seandroid/board/P_review_request/view/23402289
 vendor.TEEGRIS.                             u:object_r:vendor_teegris_prop:s0
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1709
+vendor.perf.gestureflingboost.enable      u:object_r:domain_read_prop:s0
 
 #line 1 "system/sepolicy/reqd_mask/property_contexts"
 # empty property_contexts file - this file is used to generate an empty

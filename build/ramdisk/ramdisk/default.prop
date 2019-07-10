@@ -38,7 +38,7 @@ setupwizard.feature.predeferred_enabled=false
 setupwizard.theme=glif_v3_light
 ro.setupwizard.wifi_on_exit=false
 ro.setupwizard.mode=OPTIONAL
-ro.com.google.gmsversion=9_201902
+ro.com.google.gmsversion=9_201903
 ro.vndk.version=28
 ro.vndk.lite=true
 persist.sys.usb.config=mtp
@@ -49,6 +49,6 @@ log.tag.stats_log=I
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Tue Apr 30 15:00:27 KST 2019
-ro.bootimage.build.date.utc=1556604027
-ro.bootimage.build.fingerprint=samsung/dream2ltexx/dream2lte:9/PPR1.180610.011/G955FXXS4DSE1:user/test-keys
+ro.bootimage.build.date=Wed Jun 26 16:23:47 KST 2019
+ro.bootimage.build.date.utc=1561533827
+ro.bootimage.build.fingerprint=samsung/dream2ltexx/dream2lte:9/PPR1.180610.011/G955FXXU5DSFB:user/test-keys
