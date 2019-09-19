@@ -441,6 +441,7 @@
 /mnt/vendor/efs/misc(/.*)?		u:object_r:sec_efs_file:s0
 /mnt/vendor/efs/\.drm(/.*)?		u:object_r:drm_efs_file:s0
 /data/misc/integrity(/.*)?		u:object_r:audit_log:s0
+/data/vendor/log/cbd(/.*)?		u:object_r:vendor_cbd_log_file:s0
 /data/vendor/log/vcd(/.*)?		u:object_r:vendor_vcd_log_file:s0
 /dev/\.secure_storage(/.*)?		u:object_r:secure_storage_device:s0
 /data/vendor/log/dmd(/.*)?		u:object_r:vendor_dmd_log_file:s0
@@ -600,8 +601,6 @@
 /sys/class/dsm/maxdsm_power(/.*)?		u:object_r:sysfs_maxdsm_power:s0
 /sys/class/cirrus/cirrus_bd(/.*)?		u:object_r:sysfs_ss_writable:s0
 /mnt/vendor/efs/ims_setting(/.*)?		u:object_r:sec_efs_file:s0
-/data/system/secure_storage(/.*)?		u:object_r:secure_storage_data_file:s0
-/data/vendor/secure_storage(/.*)?		u:object_r:secure_storage_vendor_data_file:s0
 /sys/class/devfreq/17000010.bus_int/time_in_state_raw		u:object_r:sysfs_time_in_state:s0
 /sys/class/devfreq/17000020.bus_mif/time_in_state_raw		u:object_r:sysfs_time_in_state:s0
 /mnt/vendor/efs/\.nv_core\.bak(.*)		u:object_r:nv_core_efs_file:s0
