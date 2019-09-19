@@ -407,7 +407,8 @@ auditfilter statsd debugfs_trace_marker:file getattr;
 auditfilter hwservicemanager proc_avc_msg:file getattr;
 
 # P190218-08158 
-auditfilter vendor_init unlabeled:dir search;
+# P190708-03533
+auditfilter vendor_init unlabeled:dir { search getattr setattr };
 
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1490
 auditfilter policyloader_app dalvikcache_data_file:file write;
@@ -581,7 +582,7 @@ auditfilter mediaprovider shell_data_file:dir getattr;
 auditfilter zygote untrusted_app:process ptrace;
 
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1874
-audtfilter webview_zygote zygote:unix_dgram_socket write;
+auditfilter webview_zygote zygote:unix_dgram_socket write;
 
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1904
 auditfilter hal_fingerprint_default default_prop:file { getattr open read }; 
@@ -607,5 +608,32 @@ auditfilter crash_dump logd:process ptrace;
 # http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-1834
 auditfilter netd untrusted_app:fifo_file write;
 
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2026
+auditfilter crash_dump vold:process ptrace;
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2030
+auditfilter mediaprovider mnt_media_rw_stub_file:dir getattr;
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2052
+auditfilter vendor_init tmpfs:lnk_file create;
+auditfilter vendor_init kernel:system module_request;
+auditfilter vendor_init functionfs:file getattr;
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2070
+auditfilter platform_app unlabeled:file { read write };
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2166
+auditfilter platform_app hal_memtrack_default:binder call;
+
 # P190527-04023
 auditfilter mediaprovider shell_data_file:dir getattr;
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2165
+auditfilter hal_camera_default media_rw_data_file:dir search;
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2293
+auditfilter platform_app spu_file:dir read; comm="ndroid.spay:web"
+
+# http://mobilerndhub.sec.samsung.net/its/browse/SEANDROID-2308
+auditfilter cp_vername mmb_device:chr_file getattr;
+
