@@ -235,9 +235,9 @@ uart_error_cnt_show(struct device *dev, struct device_attribute *attr, char *buf
 	struct s3c24xx_uart_port *ourport;
 	sprintf(buf, "000 000 000 000\n");//init buf : overrun parity frame break count
 
-	list_for_each_entry(ourport, &drvdata_list, node){ 
+	list_for_each_entry(ourport, &drvdata_list, node){
 	struct uart_port *port = &ourport->port;
-	
+
 	if (&ourport->pdev->dev != dev)
 		continue;
 
@@ -1149,11 +1149,15 @@ static void s3c24xx_serial_set_termios(struct uart_port *port,
 	if (ourport->info->has_divslot)
 		wr_regl(port, S3C2443_DIVSLOT, udivslot);
 
+
+	port->status &= ~UPSTAT_AUTOCTS;
+
 	umcon = rd_regl(port, S3C2410_UMCON);
 	if (termios->c_cflag & CRTSCTS) {
 		umcon |= S3C2410_UMCOM_AFC;
 		/* Disable RTS when RX FIFO contains 63 bytes */
 		umcon &= ~S3C2412_UMCON_AFC_8;
+		port->status = UPSTAT_AUTOCTS;
 	} else {
 		umcon &= ~S3C2410_UMCOM_AFC;
 	}

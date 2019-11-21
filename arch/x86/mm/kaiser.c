@@ -10,6 +10,7 @@
 #include <linux/mm.h>
 #include <linux/uaccess.h>
 #include <linux/ftrace.h>
+#include <linux/cpu.h>
 
 #undef pr_fmt
 #define pr_fmt(fmt)     "Kernel/User page tables isolation: " fmt
@@ -198,6 +199,8 @@ static int kaiser_add_user_map(const void *__start_addr, unsigned long size,
 	 * requires that not to be #defined to 0): so mask it off here.
 	 */
 	flags &= ~_PAGE_GLOBAL;
+	if (!(__supported_pte_mask & _PAGE_NX))
+		flags &= ~_PAGE_NX;
 
 	for (; address < end_addr; address += PAGE_SIZE) {
 		target_address = get_pa_from_mapping(address);
@@ -295,7 +298,8 @@ void __init kaiser_check_boottime_disable(void)
 			goto skip;
 	}
 
-	if (cmdline_find_option_bool(boot_command_line, "nopti"))
+	if (cmdline_find_option_bool(boot_command_line, "nopti") ||
+	    cpu_mitigations_off())
 		goto disable;
 
 skip:
@@ -343,7 +347,7 @@ void __init kaiser_init(void)
 	if (vsyscall_enabled())
 		kaiser_add_user_map_early((void *)VSYSCALL_ADDR,
 					  PAGE_SIZE,
-					   __PAGE_KERNEL_VSYSCALL);
+					  vsyscall_pgprot);
 
 	for_each_possible_cpu(cpu) {
 		void *percpu_vaddr = __per_cpu_user_mapped_start +
@@ -361,7 +365,7 @@ void __init kaiser_init(void)
 	kaiser_add_user_map_ptrs_early(__entry_text_start, __entry_text_end,
 				       __PAGE_KERNEL_RX);
 
-#if defined(CONFIG_FUNCTION_GRAPH_TRACER) || defined(CONFIG_KASAN)
+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
 	kaiser_add_user_map_ptrs_early(__irqentry_text_start,
 				       __irqentry_text_end,
 				       __PAGE_KERNEL_RX);

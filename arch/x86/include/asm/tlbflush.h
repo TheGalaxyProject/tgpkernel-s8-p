@@ -5,6 +5,7 @@
 #include <linux/sched.h>
 
 #include <asm/processor.h>
+#include <asm/cpufeature.h>
 #include <asm/special_insns.h>
 #include <asm/smp.h>
 
@@ -68,6 +69,12 @@ struct tlb_state {
 	struct mm_struct *active_mm;
 	int state;
 
+	/* Last user mm for optimizing IBPB */
+	union {
+		struct mm_struct	*last_user_mm;
+		unsigned long		last_user_mm_ibpb;
+	};
+
 	/*
 	 * Access to this CR4 shadow and to H/W CR4 is protected by
 	 * disabling interrupts when modifying either one.
@@ -106,6 +113,16 @@ static inline void cr4_clear_bits(unsigned long mask)
 		this_cpu_write(cpu_tlbstate.cr4, cr4);
 		__write_cr4(cr4);
 	}
+}
+
+static inline void cr4_toggle_bits(unsigned long mask)
+{
+	unsigned long cr4;
+
+	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+	cr4 ^= mask;
+	this_cpu_write(cpu_tlbstate.cr4, cr4);
+	__write_cr4(cr4);
 }
 
 /* Read the CR4 shadow. */

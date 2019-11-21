@@ -141,6 +141,10 @@ static inline int ext4_encryption_key_size(int mode)
 		return FMP_AES_256_CBC_KEY_SIZE;
 	case EXT4_ENCRYPTION_MODE_AES_256_HEH:
 		return EXT4_AES_256_HEH_KEY_SIZE;
+	case EXT4_ENCRYPTION_MODE_SPECK128_256_XTS:
+		return 64;
+	case EXT4_ENCRYPTION_MODE_SPECK128_256_CTS:
+		return 32;
 	default:
 		BUG();
 	}
